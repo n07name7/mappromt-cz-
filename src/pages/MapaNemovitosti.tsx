@@ -36,7 +36,7 @@ export default function MapaNemovitosti() {
         return;
       }
 
-      const response = await fetch('http://localhost:3000/api/geocode', {
+      const response = await fetch('https://mapprompt-backend1.vercel.app/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addresses: addressList }),
