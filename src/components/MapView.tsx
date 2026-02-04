@@ -106,7 +106,7 @@ export default function MapView({ locations }: MapViewProps) {
                   
                   {/* Radius info */}
                   <div className="text-xs text-blue-500 mb-3 border-b border-gray-300 pb-2">
-                    🔍 Доступність в радіусі: <span className="font-semibold">{location.search_radius || 1000} м</span>
+                    🔍 Dostupnost v okruhu: <span className="font-semibold">{location.search_radius || 1000} m</span>
                   </div>
 
                   {/* POI Information */}
