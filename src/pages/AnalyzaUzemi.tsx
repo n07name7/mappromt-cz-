@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { BarChart3, MapPin, AlertTriangle, Sparkles, Check } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function AnalyzaUzemi() {
   const [address, setAddress] = useState('');
@@ -35,9 +36,9 @@ export default function AnalyzaUzemi() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="btn-primary">
+            <Link to="/kontakt" className="btn-primary">
               Zkuste zdarma →
-            </button>
+            </Link>
             <button className="btn-secondary">
               Ukázková zpráva (PDF)
             </button>
@@ -193,9 +194,9 @@ export default function AnalyzaUzemi() {
           <p className="text-text-secondary mb-8 max-w-2xl mx-auto">
             1 analýza denně zdarma. Žádná kreditní karta není potřeba.
           </p>
-          <button className="btn-primary text-lg px-12 py-4">
+          <Link to="/kontakt" className="btn-primary text-lg px-12 py-4 inline-block">
             Zkuste zdarma →
-          </button>
+          </Link>
         </motion.div>
       </div>
     </div>

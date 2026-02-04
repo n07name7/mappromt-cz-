@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Map, Upload, Download, Sparkles, Check } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MapaNemovitosti() {
   const [addresses, setAddresses] = useState('');
@@ -35,9 +36,9 @@ export default function MapaNemovitosti() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="btn-primary">
+            <Link to="/kontakt" className="btn-primary">
               Zkuste zdarma →
-            </button>
+            </Link>
             <button className="btn-secondary">
               Podívejte se na demo
             </button>
@@ -147,9 +148,9 @@ export default function MapaNemovitosti() {
           <p className="text-text-secondary mb-8 max-w-2xl mx-auto">
             3 generace denně zdarma. Žádná kreditní karta není potřeba.
           </p>
-          <button className="btn-primary text-lg px-12 py-4">
+          <Link to="/kontakt" className="btn-primary text-lg px-12 py-4 inline-block">
             Zkuste zdarma →
-          </button>
+          </Link>
         </motion.div>
       </div>
     </div>

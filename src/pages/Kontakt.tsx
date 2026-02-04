@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Mail, MessageSquare, Send, MapPin } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Kontakt() {
   const [formData, setFormData] = useState({
@@ -187,9 +188,9 @@ export default function Kontakt() {
           <p className="text-text-secondary mb-8 max-w-2xl mx-auto">
             Možná najdete odpověď v našich často kladených otázkách
           </p>
-          <button className="btn-secondary">
+          <Link to="/kontakt" className="btn-secondary">
             Přejít na FAQ →
-          </button>
+          </Link>
         </motion.div>
       </div>
     </div>

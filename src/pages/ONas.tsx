@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Target, Users, Zap, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function ONas() {
   return (
@@ -31,7 +32,7 @@ export default function ONas() {
             <Target className="text-primary mb-4" size={48} />
             <h2 className="text-3xl font-bold mb-4">Naše mise</h2>
             <p className="text-text-secondary leading-relaxed mb-4">
-              Profesionální GIS nástroje jako ArcGIS stojí tisíce korun měsíčně 
+              Profesionální GIS nástroje stojí tisíce korun měsíčně 
               a vyžadují týdny školení. Google My Maps je příliš jednoduchý. 
             </p>
             <p className="text-text-secondary leading-relaxed">
@@ -145,9 +146,9 @@ export default function ONas() {
           <p className="text-text-secondary mb-8 max-w-2xl mx-auto">
             Staňte se součástí revoluce v českých GIS nástrojích. Začněte ještě dnes.
           </p>
-          <button className="btn-primary text-lg px-12 py-4">
+          <Link to="/kontakt" className="btn-primary text-lg px-12 py-4 inline-block">
             Zkuste MapPrompt zdarma →
-          </button>
+          </Link>
         </motion.div>
       </div>
     </div>
