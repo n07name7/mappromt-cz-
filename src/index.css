@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@layer base {
+  body {
+    @apply bg-dark-bg text-text-primary font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-dark-surface/60 backdrop-blur-md border border-dark-border/10;
+  }
+  
+  .btn-primary {
+    @apply bg-accent-green hover:bg-accent-green/90 text-white px-8 py-3 rounded-lg font-medium transition-all hover:scale-105 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-dark-surface hover:bg-dark-surface/80 text-text-primary px-8 py-3 rounded-lg font-medium transition-all hover:scale-105 active:scale-95 border border-dark-border;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-accent-purple to-primary bg-clip-text text-transparent;
+  }
+}
