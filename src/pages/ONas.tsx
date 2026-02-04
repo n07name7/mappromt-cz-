@@ -96,10 +96,10 @@ export default function ONas() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="glass rounded-2xl p-12 mb-16"
+          className="glass rounded-2xl p-6 sm:p-12 mb-16"
         >
-          <h2 className="text-3xl font-bold text-center mb-12">Naše čísla</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <h2 className="text-3xl font-bold text-center mb-8 sm:mb-12">Naše čísla</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             {[
               { value: '200+', label: 'Spokojených klientů' },
               { value: '5 000+', label: 'Vytvořených map' },
@@ -107,8 +107,8 @@ export default function ONas() {
               { value: '98%', label: 'Spokojenost' },
             ].map((stat, i) => (
               <div key={i} className="text-center">
-                <div className="text-4xl font-bold text-gradient mb-2">{stat.value}</div>
-                <div className="text-sm text-text-secondary">{stat.label}</div>
+                <div className="text-3xl sm:text-4xl font-bold text-gradient mb-2">{stat.value}</div>
+                <div className="text-xs sm:text-sm text-text-secondary">{stat.label}</div>
               </div>
             ))}
           </div>
