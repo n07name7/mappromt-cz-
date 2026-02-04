@@ -1,148 +1,205 @@
-# MapPrompt.cz — Landing Page
+# MapPrompt.cz — Kompletní Web
 
-## ✅ Что сделано
+## ✅ Všechny stránky vytvořeny
 
-Современный landing page для MapPrompt.cz с учётом трендов веб-дизайна 2026:
+### 🏠 Hlavní stránka (/)
+- Hero sekce s animacemi
+- Přehled 3 nástrojů (Bento Grid)
+- Pricing sekce
+- Footer
 
-### 🎨 Дизайн
-- ✅ **Glassmorphism** — прозрачные элементы с blur эффектом
-- ✅ **Bento Grid Layout** — модульная структура (секция Tools)
-- ✅ **Dark Theme** — темная тема с градиентами
-- ✅ **Animated Gradients** — живой фон в Hero секции
-- ✅ **Micro-interactions** — анимации на hover/scroll
-- ✅ **Mobile-First** — адаптивный дизайн для всех экранов
+### 🛠️ Nástroje
 
-### 🧩 Компоненты
-1. **Navbar** — sticky навигация с мобильным меню
-2. **Hero** — полноэкранный hero с градиентным фоном и статистикой
-3. **Tools** — 3 карточки инструментов в Bento Grid стиле
-4. **Pricing** — тарифные планы с подсветкой популярного
-5. **Footer** — футер с ссылками и соцсетями
+#### 1. Mapa Nemovitostí AI (/mapa-nemovitosti)
+- **Demo:** Textarea pro zadávání adres
+- **Output:** Interaktivní náhled výsledku
+- **Features:** Seznam všech možností (6 karet)
+- **CTA:** Výzva k akci
 
-### 🎯 Применённые тренды 2026
-- ✅ Liquid Glass эффекты
-- ✅ Scroll-triggered animations (Framer Motion)
-- ✅ Gradient text effects
-- ✅ Card hover states с elevation
-- ✅ Minimal UI с focus на контент
-- ✅ Бесшовная навигация
-- ✅ Высокий контраст для читаемости
+#### 2. Analýza Území (/analyza-uzemi)
+- **Demo:** Input pro adresu/souřadnice
+- **Preview:** Náhled zprávy (zónování, infrastruktura, rizika)
+- **What's Included:** 6 kategorií analýzy
+- **Use Cases:** Pro developery, realitní agenty, architekty
+
+#### 3. Hledač Lokací (/hledac-lokaci)
+- **Demo:** Textarea + filtry (město, rozpočet, poloměr)
+- **Results:** 3 doporučené lokality se score
+- **Analysis Criteria:** 4 kategorie
+- **Success Stories:** 3 případy úspěchu
+
+### 📄 Informační stránky
+
+#### O nás (/o-nas)
+- Mise a vize
+- Naše hodnoty (3 karty)
+- Statistiky (4 metriky)
+- Tým
+- CTA
+
+#### Kontakt (/kontakt)
+- Kontaktní informace (email, chat, adresa)
+- Kontaktní formulář (jméno, email, předmět, zpráva)
+- Link na FAQ
+
+#### Ceny (/pricing)
+- Detail všech 3 plánů (Zdarma/Starter/Pro)
+- Zvýraznění populárního plánu
 
 ---
 
-## 🚀 Запуск проекта
+## 🎨 Design Features
 
-### 1. Установка зависимостей
-```bash
-cd /home/ivan/clawd/mapprompt-cz
-npm install
+✅ **Dark Theme** — konzistentní napříč všemi stránkami  
+✅ **Glassmorphism** — průhledné karty s blur efektem  
+✅ **Framer Motion Animations** — fade-in, stagger, hover efekty  
+✅ **Responsive Design** — mobile-first přístup  
+✅ **Interactive Demos** — funkční formuláře a preview  
+✅ **React Router** — plynulá navigace bez reload  
+✅ **Dropdown Menu** — navigace v nástrojích (desktop)  
+
+---
+
+## 🚀 Technologie
+
+- **React 19** + **TypeScript**
+- **Vite** — bundler
+- **Tailwind CSS 3** — styling
+- **Framer Motion** — animace
+- **React Router** — routing
+- **Lucide React** — ikony
+
+---
+
+## 📁 Struktura
+
+```
+src/
+├── components/
+│   ├── Layout.tsx      # Wrapper s Navbar + Footer
+│   ├── Navbar.tsx      # Navigace s dropdown menu
+│   ├── Hero.tsx        # Hero sekce
+│   ├── Tools.tsx       # 3 nástroje (homepage)
+│   ├── Pricing.tsx     # Pricing sekce
+│   └── Footer.tsx      # Footer
+├── pages/
+│   ├── Home.tsx             # Hlavní stránka
+│   ├── MapaNemovitosti.tsx # Nástroj #1
+│   ├── AnalyzaUzemi.tsx    # Nástroj #2
+│   ├── HledacLokaci.tsx    # Nástroj #3
+│   ├── ONas.tsx            # O nás
+│   └── Kontakt.tsx         # Kontakt
+└── App.tsx             # Router setup
 ```
 
-### 2. Запуск dev сервера
+---
+
+## 🔗 Navigace
+
+### Desktop:
+- **Nástroje** (dropdown):
+  - Mapa Nemovitostí AI
+  - Analýza Území
+  - Hledač Lokací
+- **Ceny**
+- **O nás**
+- **Kontakt**
+
+### Mobile:
+- Hamburger menu se všemi odkazy
+
+---
+
+## 🌐 Live URL
+
+**GitHub Pages:** https://n07name7.github.io/mappromt-cz-/
+
+---
+
+## 💻 Lokální vývoj
+
 ```bash
+cd /home/ivan/clawd/projects/mapprompt-cz
 npm run dev
 ```
 
-Сайт доступен на: **http://localhost:5173/**
+URL: http://localhost:5173/
 
-### 3. Build для продакшена
+---
+
+## 📦 Deploy
+
 ```bash
 npm run build
-npm run preview
+npm run deploy
 ```
 
----
-
-## 📦 Используемые технологии
-
-- **React 19** + **TypeScript** — основа
-- **Vite** — bundler (быстрый dev server)
-- **Tailwind CSS** — utility-first CSS
-- **Framer Motion** — анимации
-- **Lucide React** — иконки
-- **Google Fonts (Inter)** — типографика
+Automaticky deployuje na GitHub Pages (gh-pages branch).
 
 ---
 
-## 📁 Структура проекта
+## ✨ Interaktivní Features
 
-```
-mapprompt-cz/
-├── src/
-│   ├── components/
-│   │   ├── Navbar.tsx       # Навигация
-│   │   ├── Hero.tsx         # Hero секция
-│   │   ├── Tools.tsx        # Инструменты (Bento Grid)
-│   │   ├── Pricing.tsx      # Тарифы
-│   │   └── Footer.tsx       # Футер
-│   ├── App.tsx              # Главный компонент
-│   ├── main.tsx             # Entry point
-│   └── index.css            # Global styles + Tailwind
-├── DESIGN_BRIEF.md          # Подробный design brief
-├── tailwind.config.js       # Tailwind настройки
-└── package.json
-```
+### Mapa Nemovitostí:
+- ✅ Zadávání adres v textarea
+- ✅ Tlačítko "Vytvořit mapu" s animací
+- ✅ Preview výsledku
+- ✅ Počítadlo zpracovaných adres
 
----
+### Analýza Území:
+- ✅ Input pro adresu/souřadnice
+- ✅ Tlačítko "Spustit analýzu"
+- ✅ Preview zprávy (zónování, infrastruktura, rizika)
+- ✅ Button "Stáhnout PDF"
 
-## 🎨 Цветовая палитра
+### Hledač Lokací:
+- ✅ Textarea + 3 filtry (město, rozpočet, poloměr)
+- ✅ Tlačítko "Najít lokality"
+- ✅ 3 výsledky se score a detaily
+- ✅ Hover efekty na kartách
 
-### Primary Colors:
-- **Primary Blue:** `#3B82F6` — главный акцент
-- **Accent Purple:** `#8B5CF6` — AI ассоциации
-- **Success Green:** `#10B981` — CTA кнопки
-
-### Dark Theme:
-- **Background:** `#0F172A` — deep navy
-- **Surface:** `#1E293B` — карточки
-- **Border:** `#334155` — тонкие границы
+### Kontakt:
+- ✅ Funkční formulář s validací
+- ✅ Tlačítko "Odeslat zprávu" s animací
+- ✅ Success message (alert)
 
 ---
 
-## 📝 Что дальше?
+## 📊 Performance
 
-### Next Steps:
-1. **Добавить Features секцию** — скриншоты + описания возможностей
-2. **Social Proof** — логотипы клиентов / отзывы
-3. **FAQ** — частые вопросы
-4. **CTA секция** — финальный призыв к действию перед футером
-5. **Blog секция** — 3 последние статьи (если будет блог)
-
-### Интеграции (потом):
-- Lemon Squeezy (платежи)
-- Supabase (auth + quotas)
-- Analytics (Plausible / PostHog)
+- **Bundle Size:** ~400 KB JS (gzipped: 124 KB)
+- **CSS:** 22 KB (gzipped: 4.4 KB)
+- **Total Pages:** 7
+- **Components:** 13
 
 ---
 
-## 🔧 Кастомизация
+## 🎯 Co dále?
 
-### Изменить цвета:
-Открыть `tailwind.config.js` → секция `theme.extend.colors`
-
-### Изменить анимации:
-Открыть `src/components/[Component].tsx` → Framer Motion props
-
-### Изменить тексты:
-Все тексты жёстко закодированы в компонентах (пока нет CMS)
-
----
-
-## 📊 Performance Targets
-
-- ✅ **Lighthouse Score:** 90+ (десктоп)
-- ✅ **First Contentful Paint:** < 1.5s
-- ✅ **Time to Interactive:** < 3s
-- ✅ **Bundle Size:** ~200 KB (gzipped)
+### Možná vylepšení:
+- [ ] FAQ stránka
+- [ ] Blog (pokud bude obsah)
+- [ ] Privacy Policy / Terms
+- [ ] Real backend integrace (Supabase)
+- [ ] Auth system (přihlášení/registrace)
+- [ ] Real map preview (Mapbox API)
+- [ ] SEO optimalizace (meta tags per page)
+- [ ] Analytics (Plausible / PostHog)
 
 ---
 
-## 💬 Контакт
+## 📝 Poznámky
 
-Создано для: **Иван** (@h629571540)  
-Дата: **04.02.2026**  
-Модель: **Claude Sonnet 4.5** (GitHub Copilot)
+- Všechny formuláře jsou **pouze frontend** (žádný backend zatím)
+- Mapy a analýzy jsou **mock data** (ukázky)
+- Dropdown menu v navigaci funguje na hover (desktop)
+- Všechny animace jsou **optimalizované** (Framer Motion)
+- **Mobile-first** design — testováno na malých obrazovkách
 
 ---
 
-**🚀 Готово к использованию!** Можно показывать клиентам или деплоить на Vercel.
+**🚀 Projekt je kompletní a ready pro použití!**
+
+Vytvořeno: **04.02.2026**  
+Autor: **Claude Sonnet 4.5** (GitHub Copilot)  
+Pro: **Iván** (@h629571540)
