@@ -9,6 +9,7 @@ interface Location {
   lat: number;
   lon: number;
   display_name: string;
+  search_radius?: number;
   poi_nearby?: {
     transport?: Array<{ name: string; distance: number }>;
     schools?: Array<{ name: string; distance: number }>;
@@ -21,6 +22,7 @@ export default function MapaNemovitosti() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
+  const [radius, setRadius] = useState(1000); // по умолчанию 1 км
 
   const handleGenerate = async () => {
     setIsGenerating(true);
@@ -39,7 +41,7 @@ export default function MapaNemovitosti() {
       const response = await fetch('https://mapprompt-backend1.vercel.app/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ addresses: addressList }),
+        body: JSON.stringify({ addresses: addressList, radius: radius }),
       });
 
       if (!response.ok) {
@@ -119,6 +121,30 @@ export default function MapaNemovitosti() {
               <Upload className="mr-2 text-primary" size={24} />
               Zadejte adresy
             </h3>
+
+            {/* Radius Slider */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2">
+                🔍 Радиус поиска POI: <span className="text-primary">{radius} м</span>
+              </label>
+              <div className="text-xs text-text-secondary mb-2">
+                💡 <strong>Совет:</strong> Для центра города используйте 500-1000м, для пригорода — 2000-5000м
+              </div>
+              <input
+                type="range"
+                min="100"
+                max="5000"
+                step="100"
+                value={radius}
+                onChange={(e) => setRadius(Number(e.target.value))}
+                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer radius-slider"
+              />
+              <div className="flex justify-between text-xs text-text-secondary mt-1">
+                <span>100 м</span>
+                <span>5000 м</span>
+              </div>
+            </div>
+
             <textarea
               value={addresses}
               onChange={(e) => setAddresses(e.target.value)}

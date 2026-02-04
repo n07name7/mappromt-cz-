@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -21,6 +21,7 @@ interface Location {
   lat: number;
   lon: number;
   display_name: string;
+  search_radius?: number;
   poi_nearby?: {
     transport?: Array<{ name: string; distance: number }>;
     schools?: Array<{ name: string; distance: number }>;
@@ -79,80 +80,98 @@ export default function MapView({ locations }: MapViewProps) {
         />
 
         {locations.map((location, index) => (
-          <Marker key={index} position={[location.lat, location.lon]}>
-            <Popup maxWidth={350}>
-              <div className="p-2">
-                {/* Address */}
-                <h3 className="font-bold text-lg mb-1">{location.address}</h3>
-                <p className="text-xs text-gray-500 mb-3">
-                  {location.lat.toFixed(5)}, {location.lon.toFixed(5)}
-                </p>
-
-                {/* POI Information */}
-                {location.poi_nearby && (
-                  <div className="space-y-3">
-                    {/* Transport */}
-                    {location.poi_nearby.transport && location.poi_nearby.transport.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-sm mb-1 flex items-center">
-                          🚇 Doprava
-                        </h4>
-                        <ul className="text-xs space-y-1">
-                          {location.poi_nearby.transport.slice(0, 3).map((item, i) => (
-                            <li key={i} className="flex justify-between">
-                              <span>{item.name}</span>
-                              <span className="text-gray-500">{item.distance}m</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Schools */}
-                    {location.poi_nearby.schools && location.poi_nearby.schools.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-sm mb-1 flex items-center">
-                          🏫 Školy
-                        </h4>
-                        <ul className="text-xs space-y-1">
-                          {location.poi_nearby.schools.slice(0, 3).map((item, i) => (
-                            <li key={i} className="flex justify-between">
-                              <span>{item.name}</span>
-                              <span className="text-gray-500">{item.distance}m</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Shops */}
-                    {location.poi_nearby.shops && location.poi_nearby.shops.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-sm mb-1 flex items-center">
-                          🛒 Obchody
-                        </h4>
-                        <ul className="text-xs space-y-1">
-                          {location.poi_nearby.shops.slice(0, 3).map((item, i) => (
-                            <li key={i} className="flex justify-between">
-                              <span>{item.name}</span>
-                              <span className="text-gray-500">{item.distance}m</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* No POI data */}
-                {!location.poi_nearby && (
-                  <p className="text-xs text-gray-500 italic">
-                    Informace o okolí nejsou dostupné
+          <>
+            {/* Visual radius circle */}
+            <Circle
+              key={`circle-${index}`}
+              center={[location.lat, location.lon]}
+              radius={location.search_radius || 1000}
+              pathOptions={{ 
+                color: 'blue', 
+                fillColor: 'blue', 
+                fillOpacity: 0.1,
+                weight: 1,
+                dashArray: '5, 10'
+              }}
+            />
+            
+            <Marker key={`marker-${index}`} position={[location.lat, location.lon]}>
+              <Popup maxWidth={350}>
+                <div className="p-2">
+                  {/* Address */}
+                  <h3 className="font-bold text-lg mb-1">{location.address}</h3>
+                  <p className="text-xs text-gray-500 mb-2">
+                    📍 {location.lat.toFixed(5)}, {location.lon.toFixed(5)}
                   </p>
-                )}
-              </div>
-            </Popup>
-          </Marker>
+                  
+                  {/* Radius info */}
+                  <div className="text-xs text-blue-500 mb-3 border-b border-gray-300 pb-2">
+                    🔍 Доступність в радіусі: <span className="font-semibold">{location.search_radius || 1000} м</span>
+                  </div>
+
+                  {/* POI Information */}
+                  {location.poi_nearby && Object.keys(location.poi_nearby).length > 0 ? (
+                    <div className="space-y-3">
+                      {/* Transport */}
+                      {location.poi_nearby.transport && location.poi_nearby.transport.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-sm mb-1 flex items-center">
+                            🚇 Doprava
+                          </h4>
+                          <ul className="text-xs space-y-1">
+                            {location.poi_nearby.transport.slice(0, 3).map((item, i) => (
+                              <li key={i} className="flex justify-between pl-4">
+                                <span>• {item.name}</span>
+                                <span className="text-gray-500">({item.distance}m)</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Schools */}
+                      {location.poi_nearby.schools && location.poi_nearby.schools.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-sm mb-1 flex items-center">
+                            🏫 Školy
+                          </h4>
+                          <ul className="text-xs space-y-1">
+                            {location.poi_nearby.schools.slice(0, 3).map((item, i) => (
+                              <li key={i} className="flex justify-between pl-4">
+                                <span>• {item.name}</span>
+                                <span className="text-gray-500">({item.distance}m)</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Shops */}
+                      {location.poi_nearby.shops && location.poi_nearby.shops.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-sm mb-1 flex items-center">
+                            🛒 Obchody
+                          </h4>
+                          <ul className="text-xs space-y-1">
+                            {location.poi_nearby.shops.slice(0, 3).map((item, i) => (
+                              <li key={i} className="flex justify-between pl-4">
+                                <span>• {item.name}</span>
+                                <span className="text-gray-500">({item.distance}m)</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-yellow-600 italic">
+                      ⚠️ POI данные недоступны для этого адреса
+                    </p>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          </>
         ))}
       </MapContainer>
     </div>
