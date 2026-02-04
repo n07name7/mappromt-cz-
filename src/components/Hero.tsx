@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
@@ -80,13 +81,13 @@ export default function Hero() {
             transition={{ delay: 0.7 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <button className="btn-primary group flex items-center space-x-2">
+            <Link to="/mapa-nemovitosti" className="btn-primary group flex items-center space-x-2">
               <span>Zkuste zdarma</span>
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="btn-secondary">
+            </Link>
+            <a href="#nastroje" className="btn-secondary">
               Podívejte se jak to funguje
-            </button>
+            </a>
           </motion.div>
 
           {/* Stats */}

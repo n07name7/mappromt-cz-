@@ -1,4 +1,5 @@
 import { Github, Twitter, Linkedin, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -9,24 +10,24 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1">
-            <div className="flex items-center space-x-2 mb-4">
+            <Link to="/" className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent-purple rounded-lg" />
               <span className="text-xl font-bold">MapPrompt</span>
-            </div>
+            </Link>
             <p className="text-text-secondary text-sm mb-4">
               AI-powered GIS nástroje pro českou republiku
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-text-secondary hover:text-primary transition-colors">
+              <a href="https://twitter.com" target="_blank" rel="noopener" className="text-text-secondary hover:text-primary transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-text-secondary hover:text-primary transition-colors">
+              <a href="https://github.com" target="_blank" rel="noopener" className="text-text-secondary hover:text-primary transition-colors">
                 <Github size={20} />
               </a>
-              <a href="#" className="text-text-secondary hover:text-primary transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener" className="text-text-secondary hover:text-primary transition-colors">
                 <Linkedin size={20} />
               </a>
-              <a href="#" className="text-text-secondary hover:text-primary transition-colors">
+              <a href="mailto:ahoj@mapprompt.cz" className="text-text-secondary hover:text-primary transition-colors">
                 <Mail size={20} />
               </a>
             </div>
@@ -37,19 +38,19 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Nástroje</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/mapa-nemovitosti" className="text-text-secondary hover:text-text-primary transition-colors">
                   Mapa Nemovitostí AI
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/analyza-uzemi" className="text-text-secondary hover:text-text-primary transition-colors">
                   Analýza Území
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/hledac-lokaci" className="text-text-secondary hover:text-text-primary transition-colors">
                   Hledač Lokací
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -59,24 +60,19 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Firma</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/o-nas" className="text-text-secondary hover:text-text-primary transition-colors">
                   O nás
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
-                  Blog
-                </a>
+                <Link to="/pricing" className="text-text-secondary hover:text-text-primary transition-colors">
+                  Ceny
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
-                  Kariéra
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/kontakt" className="text-text-secondary hover:text-text-primary transition-colors">
                   Kontakt
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -86,19 +82,19 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Právní</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/kontakt" className="text-text-secondary hover:text-text-primary transition-colors">
                   Ochrana osobních údajů
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/kontakt" className="text-text-secondary hover:text-text-primary transition-colors">
                   Podmínky použití
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-text-secondary hover:text-text-primary transition-colors">
+                <Link to="/kontakt" className="text-text-secondary hover:text-text-primary transition-colors">
                   Cookies
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Check, Zap, Crown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const plans = [
   {
@@ -14,6 +15,7 @@ const plans = [
       'Email podpora',
     ],
     cta: 'Začít zdarma',
+    link: '/mapa-nemovitosti',
     popular: false,
     icon: Zap,
   },
@@ -30,6 +32,7 @@ const plans = [
       'Bez loga MapPrompt',
     ],
     cta: 'Vyzkoušet 14 dní zdarma',
+    link: '/kontakt',
     popular: true,
     icon: Crown,
   },
@@ -46,6 +49,7 @@ const plans = [
       'SLA 99.9%',
     ],
     cta: 'Kontaktovat prodej',
+    link: '/kontakt',
     popular: false,
     icon: Crown,
   },
@@ -124,16 +128,17 @@ export default function Pricing() {
               </ul>
 
               {/* CTA Button */}
-              <button
+              <Link
+                to={plan.link}
                 className={`
-                  w-full py-3 rounded-lg font-medium transition-all
+                  w-full py-3 rounded-lg font-medium transition-all block text-center
                   ${plan.popular 
                     ? 'btn-primary' 
                     : 'btn-secondary'}
                 `}
               >
                 {plan.cta}
-              </button>
+              </Link>
             </motion.div>
           ))}
         </div>

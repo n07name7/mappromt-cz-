@@ -81,10 +81,13 @@ export default function Tools() {
               </p>
 
               {/* CTA Link */}
-              <Link to={tool.link}>
+              <Link 
+                to={tool.link}
+                className="inline-flex items-center space-x-2 text-primary group-hover:text-accent-purple transition-colors"
+              >
                 <motion.div
-                  className="inline-flex items-center space-x-2 text-primary group-hover:text-accent-purple transition-colors"
                   whileHover={{ x: 5 }}
+                  className="flex items-center space-x-2"
                 >
                   <span className="font-medium">Vyzkoušet</span>
                   <ArrowRight size={16} />
