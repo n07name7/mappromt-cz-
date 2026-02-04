@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Map, BarChart3, MapPin, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const tools = [
   {
@@ -8,6 +9,7 @@ const tools = [
     description: 'Zadejte adresy → AI vytvoří interaktivní mapu s infrastrukturou a analýzou',
     color: 'from-blue-500 to-cyan-500',
     delay: 0.1,
+    link: '/mapa-nemovitosti',
   },
   {
     icon: BarChart3,
@@ -15,6 +17,7 @@ const tools = [
     description: 'Vložte souřadnice → Získejte kompletní zprávu o zónování, rizicích a demografii',
     color: 'from-purple-500 to-pink-500',
     delay: 0.2,
+    link: '/analyza-uzemi',
   },
   {
     icon: MapPin,
@@ -22,6 +25,7 @@ const tools = [
     description: 'Popište byznys → AI najde nejlepší místa pro vaši pobočku či investici',
     color: 'from-emerald-500 to-teal-500',
     delay: 0.3,
+    link: '/hledac-lokaci',
   },
 ];
 
@@ -77,14 +81,15 @@ export default function Tools() {
               </p>
 
               {/* CTA Link */}
-              <motion.a
-                href="#"
-                className="inline-flex items-center space-x-2 text-primary group-hover:text-accent-purple transition-colors"
-                whileHover={{ x: 5 }}
-              >
-                <span className="font-medium">Vyzkoušet</span>
-                <ArrowRight size={16} />
-              </motion.a>
+              <Link to={tool.link}>
+                <motion.div
+                  className="inline-flex items-center space-x-2 text-primary group-hover:text-accent-purple transition-colors"
+                  whileHover={{ x: 5 }}
+                >
+                  <span className="font-medium">Vyzkoušet</span>
+                  <ArrowRight size={16} />
+                </motion.div>
+              </Link>
 
               {/* Hover Border Effect */}
               <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-primary/20 transition-all duration-500" />

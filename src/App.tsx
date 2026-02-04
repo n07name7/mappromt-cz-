@@ -1,19 +1,37 @@
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Tools from './components/Tools'
-import Pricing from './components/Pricing'
-import Footer from './components/Footer'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import MapaNemovitosti from './pages/MapaNemovitosti';
+import AnalyzaUzemi from './pages/AnalyzaUzemi';
+import HledacLokaci from './pages/HledacLokaci';
+import ONas from './pages/ONas';
+import Kontakt from './pages/Kontakt';
+import Pricing from './components/Pricing';
+
+function PricingPage() {
+  return (
+    <div className="py-24">
+      <Pricing />
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <Tools />
-      <Pricing />
-      <Footer />
-    </div>
-  )
+    <Router basename="/mappromt-cz-">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="mapa-nemovitosti" element={<MapaNemovitosti />} />
+          <Route path="analyza-uzemi" element={<AnalyzaUzemi />} />
+          <Route path="hledac-lokaci" element={<HledacLokaci />} />
+          <Route path="pricing" element={<PricingPage />} />
+          <Route path="o-nas" element={<ONas />} />
+          <Route path="kontakt" element={<Kontakt />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
