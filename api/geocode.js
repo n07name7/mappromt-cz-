@@ -28,8 +28,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Требуется массив addresses' });
     }
 
-    if (addresses.length > 10) {
-      return res.status(400).json({ error: 'Максимум 10 адресов за раз' });
+    if (addresses.length > 20) {
+      return res.status(400).json({ error: 'Максимум 20 адресов за раз' });
     }
 
     const results = [];
