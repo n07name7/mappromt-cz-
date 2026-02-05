@@ -1,6 +1,6 @@
 import { X, MapPin, Star, Navigation, TrendingUp, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 interface Location {
   address: string;
