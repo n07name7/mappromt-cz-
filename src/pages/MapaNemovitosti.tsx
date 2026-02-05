@@ -38,10 +38,22 @@ export default function MapaNemovitosti() {
         return;
       }
 
+      console.log('[MapaNemovitosti] Sending request to API...', {
+        addresses: addressList,
+        radius: radius,
+        url: 'https://mapprompt-backend.netlify.app/api/geocode'
+      });
+
       const response = await fetch('https://mapprompt-backend.netlify.app/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addresses: addressList, radius: radius }),
+      });
+
+      console.log('[MapaNemovitosti] Response received:', {
+        status: response.status,
+        ok: response.ok,
+        statusText: response.statusText
       });
 
       if (!response.ok) {
@@ -49,6 +61,7 @@ export default function MapaNemovitosti() {
       }
 
       const data = await response.json();
+      console.log('[MapaNemovitosti] Data parsed:', data);
 
       const successfulLocations = data.results
         .filter((r: any) => r.status === 'success')
@@ -68,9 +81,12 @@ export default function MapaNemovitosti() {
         }
       }
     } catch (err) {
-      console.error('Error geocoding:', err);
+      console.error('[MapaNemovitosti] Error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Neznámá chyba';
+      const errorType = err instanceof TypeError ? 'Network/CORS' : 'Server';
+      
       setError(
-        `❌ Chyba při připojení k API: ${err instanceof Error ? err.message : 'Neznámá chyba'}. Zkontrolujte síťové připojení a konzoli prohlížeče.`
+        `❌ Chyba (${errorType}): ${errorMessage}. Zkuste to znovu nebo kontaktujte podporu.`
       );
     } finally {
       setIsGenerating(false);
