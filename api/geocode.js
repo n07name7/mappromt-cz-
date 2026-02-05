@@ -1,8 +1,8 @@
 import { geocodeAddress } from '../lib/services/nominatim.js';
 import { getFoursquarePOI } from '../lib/services/foursquare.js';
+import { getPOINearby } from '../lib/services/overpass.js';
 
 export default async function handler(req, res) {
-  // CORS headers handled by Vercel config or manual
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -34,31 +34,38 @@ export default async function handler(req, res) {
 
     const results = [];
 
+    // Обрабатываем адреса последовательно (геокодинг имеет rate limit)
+    // Но POI можно параллелить внутри каждого
     for (const address of addresses) {
-      // 1. Geocoding
       const geocodeResult = await geocodeAddress(address);
 
       if (geocodeResult.status === 'success') {
         const { lat, lon } = geocodeResult.data;
 
-        // 2. Foursquare POI
-        // Используем только Foursquare для скорости
-        const foursquarePOI = await getFoursquarePOI(lat, lon, radius);
+        // Параллельный запрос к источникам данных
+        // Используем Promise.allSettled чтобы ошибка одного не валила всё
+        const [foursquareResult, osmResult] = await Promise.allSettled([
+          getFoursquarePOI(lat, lon, radius),
+          getPOINearby(lat, lon, radius)
+        ]);
+
+        const foursquarePOI = foursquareResult.status === 'fulfilled' ? foursquareResult.value : { shops: [], hospitals: [], services: [] };
+        const osmPOI = osmResult.status === 'fulfilled' ? osmResult.value : { transport: [], schools: [] };
 
         const poi = {
-          transport: [], // Отключено для скорости, можно включить Overpass если нужно
-          schools: [],
+          transport: osmPOI.transport || [],
+          schools: osmPOI.schools || [],
           shops: foursquarePOI.shops || [],
           hospitals: foursquarePOI.hospitals || [],
           services: foursquarePOI.services || []
         };
 
         const hasPOI = 
+          poi.transport.length > 0 ||
+          poi.schools.length > 0 ||
           poi.shops.length > 0 ||
           poi.hospitals.length > 0 ||
           poi.services.length > 0;
-
-        const poiStatus = hasPOI ? 'available' : 'unavailable';
 
         results.push({
           address,
@@ -67,7 +74,7 @@ export default async function handler(req, res) {
             ...geocodeResult.data,
             search_radius: radius,
             poi_nearby: hasPOI ? poi : null,
-            poi_status: poiStatus
+            poi_status: hasPOI ? 'available' : 'unavailable'
           }
         });
       } else {
