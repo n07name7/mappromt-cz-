@@ -28,6 +28,7 @@ function App() {
           <Route path="pricing" element={<PricingPage />} />
           <Route path="o-nas" element={<ONas />} />
           <Route path="kontakt" element={<Kontakt />} />
+          <Route path="*" element={<div style={{color: 'white', padding: '2rem'}}>404 - Страница не найдена. Path: {window.location.pathname}</div>} />
         </Route>
       </Routes>
     </Router>

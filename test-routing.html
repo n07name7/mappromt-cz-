@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Router Test</title>
+    <script>
+        // Симуляция навигации
+        console.log("Current URL:", window.location.href);
+        console.log("Pathname:", window.location.pathname);
+        
+        // Проверка что JS загружается
+        fetch('/assets/index-Xlr8CFJM.js')
+            .then(r => {
+                console.log("JS bundle status:", r.status);
+                return r.text();
+            })
+            .then(text => {
+                console.log("JS size:", text.length, "bytes");
+                // Поиск роутов в коде
+                if (text.includes('mapa-nemovitosti')) {
+                    console.log("✓ Route 'mapa-nemovitosti' найден в коде");
+                } else {
+                    console.log("✗ Route 'mapa-nemovitosti' НЕ найден в коде!");
+                }
+            })
+            .catch(e => console.error("Error loading JS:", e));
+    </script>
+</head>
+<body>
+    <h1>Testing Router...</h1>
+    <p>Открой консоль (F12)</p>
+</body>
+</html>

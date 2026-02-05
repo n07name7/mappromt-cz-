@@ -52,51 +52,47 @@ export default function Tools() {
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {tools.map((tool, index) => (
-            <motion.div
+            <Link 
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: tool.delay, duration: 0.6 }}
-              whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className="glass rounded-2xl p-8 card-hover group relative overflow-hidden"
+              to={tool.link}
+              className="block"
             >
-              {/* Gradient Overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${tool.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-              
-              {/* Icon */}
               <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className={`w-14 h-14 rounded-xl bg-gradient-to-br ${tool.color} p-3 mb-6`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: tool.delay, duration: 0.6 }}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="glass rounded-2xl p-8 card-hover group relative overflow-hidden h-full"
               >
-                <tool.icon className="w-full h-full text-white" />
+                {/* Gradient Overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${tool.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+                
+                {/* Icon */}
+                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${tool.color} p-3 mb-6`}>
+                  <tool.icon className="w-full h-full text-white" />
+                </div>
+
+                {/* Content */}
+                <h3 className="text-xl font-bold mb-3 group-hover:text-gradient transition-all">
+                  {tool.title}
+                </h3>
+                <p className="text-text-secondary mb-6 leading-relaxed">
+                  {tool.description}
+                </p>
+
+                {/* CTA Link */}
+                <div className="inline-flex items-center space-x-2 text-primary group-hover:text-accent-purple transition-colors">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-medium">Vyzkoušet</span>
+                    <ArrowRight size={16} />
+                  </div>
+                </div>
+
+                {/* Hover Border Effect */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-primary/20 transition-all duration-500" />
               </motion.div>
-
-              {/* Content */}
-              <h3 className="text-xl font-bold mb-3 group-hover:text-gradient transition-all">
-                {tool.title}
-              </h3>
-              <p className="text-text-secondary mb-6 leading-relaxed">
-                {tool.description}
-              </p>
-
-              {/* CTA Link */}
-              <Link 
-                to={tool.link}
-                className="inline-flex items-center space-x-2 text-primary group-hover:text-accent-purple transition-colors"
-              >
-                <motion.div
-                  whileHover={{ x: 5 }}
-                  className="flex items-center space-x-2"
-                >
-                  <span className="font-medium">Vyzkoušet</span>
-                  <ArrowRight size={16} />
-                </motion.div>
-              </Link>
-
-              {/* Hover Border Effect */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-primary/20 transition-all duration-500" />
-            </motion.div>
+            </Link>
           ))}
         </div>
 

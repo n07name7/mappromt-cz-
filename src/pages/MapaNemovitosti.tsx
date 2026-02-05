@@ -38,7 +38,7 @@ export default function MapaNemovitosti() {
         return;
       }
 
-      const response = await fetch('https://mapprompt-backend1.vercel.app/api/geocode', {
+      const response = await fetch('https://mapprompt-backend.netlify.app/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addresses: addressList, radius: radius }),
@@ -70,7 +70,7 @@ export default function MapaNemovitosti() {
     } catch (err) {
       console.error('Error geocoding:', err);
       setError(
-        'Nepodařilo se spojit s API. Je backend spuštěný? (Zkontrolujte http://localhost:3000)'
+        `❌ Chyba při připojení k API: ${err instanceof Error ? err.message : 'Neznámá chyba'}. Zkontrolujte síťové připojení a konzoli prohlížeče.`
       );
     } finally {
       setIsGenerating(false);
