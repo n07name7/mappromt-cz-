@@ -1,5 +1,5 @@
-const { geocodeAddress } = require('../lib/services/nominatim');
-const { getFoursquarePOI } = require('../lib/services/foursquare');
+import { geocodeAddress } from '../lib/services/nominatim.js';
+import { getFoursquarePOI } from '../lib/services/foursquare.js';
 
 export default async function handler(req, res) {
   // CORS headers handled by Vercel config or manual
