@@ -198,6 +198,16 @@ export default function MapView({ locations }: MapViewProps) {
                           </ul>
                         </div>
                       )}
+
+                      {/* Button for full POI details */}
+                      <div className="mt-4 pt-3 border-t border-gray-300">
+                        <button 
+                          className="w-full text-xs text-blue-600 hover:text-blue-800 font-semibold"
+                          onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lon}`, '_blank')}
+                        >
+                          📍 Zobrazit více POI →
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <p className="text-xs text-yellow-600 italic">
