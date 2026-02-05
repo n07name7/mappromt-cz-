@@ -14,6 +14,8 @@ interface Location {
     transport?: Array<{ name: string; distance: number }>;
     schools?: Array<{ name: string; distance: number }>;
     shops?: Array<{ name: string; distance: number }>;
+    hospitals?: Array<{ name: string; distance: number }>;
+    services?: Array<{ name: string; distance: number }>;
   };
 }
 

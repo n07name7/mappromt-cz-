@@ -26,7 +26,7 @@ interface Location {
     transport?: Array<{ name: string; distance: number }>;
     schools?: Array<{ name: string; distance: number }>;
     shops?: Array<{ name: string; distance: number }>;
-    restaurants?: Array<{ name: string; distance: number }>;
+    hospitals?: Array<{ name: string; distance: number }>;
     services?: Array<{ name: string; distance: number }>;
   };
 }
@@ -165,14 +165,14 @@ export default function MapView({ locations }: MapViewProps) {
                         </div>
                       )}
 
-                      {/* Restaurants */}
-                      {location.poi_nearby.restaurants && location.poi_nearby.restaurants.length > 0 && (
+                      {/* Hospitals */}
+                      {location.poi_nearby.hospitals && location.poi_nearby.hospitals.length > 0 && (
                         <div>
                           <h4 className="font-semibold text-sm mb-1 flex items-center">
-                            🍴 Restaurace
+                            🏥 Nemocnice
                           </h4>
                           <ul className="text-xs space-y-1">
-                            {location.poi_nearby.restaurants.slice(0, 3).map((item, i) => (
+                            {location.poi_nearby.hospitals.slice(0, 3).map((item, i) => (
                               <li key={i} className="flex justify-between pl-4">
                                 <span>• {item.name}</span>
                                 <span className="text-gray-500">({item.distance}m)</span>
