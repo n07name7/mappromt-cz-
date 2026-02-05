@@ -2,7 +2,7 @@
 const isDevelopment = import.meta.env.MODE === 'development';
 
 export const API_BASE_URL = isDevelopment 
-  ? 'https://graduate-administered-gonna-pants.trycloudflare.com/api'  // Cloudflare Tunnel backend
+  ? 'http://localhost:3000/api'  // Local backend for development
   : 'https://mapprompt-backend.netlify.app/api';  // Production
 
 export const API_ENDPOINTS = {
