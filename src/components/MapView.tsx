@@ -2,20 +2,6 @@ import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Fix Leaflet default icons in Vite
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
-const DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
-
 interface Location {
   address: string;
   lat: number;
@@ -33,9 +19,48 @@ interface Location {
 
 interface MapViewProps {
   locations: Location[];
+  ratings: number[];
+  selectedIndex: number | null;
+  onMarkerClick: (index: number) => void;
 }
 
-export default function MapView({ locations }: MapViewProps) {
+// Create custom icon based on rating
+const createCustomIcon = (rating: number, isSelected: boolean) => {
+  const size = isSelected ? 40 : 32;
+  const color = rating >= 8 ? '#10b981' : rating >= 6 ? '#f59e0b' : '#ef4444';
+  
+  return L.divIcon({
+    html: `
+      <div style="
+        width: ${size}px;
+        height: ${size}px;
+        background: ${color};
+        border: ${isSelected ? '4px' : '3px'} solid white;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      ">
+        <span style="
+          transform: rotate(45deg);
+          color: white;
+          font-weight: 900;
+          font-size: ${size * 0.4}px;
+          line-height: 1;
+        ">${rating.toFixed(1)}</span>
+      </div>
+    `,
+    className: 'custom-marker',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size],
+    popupAnchor: [0, -size],
+  });
+};
+
+export default function MapView({ locations, ratings, selectedIndex, onMarkerClick }: MapViewProps) {
   // Calculate map center (average of all coordinates)
   const center = locations.reduce(
     (acc, loc) => {
@@ -69,7 +94,7 @@ export default function MapView({ locations }: MapViewProps) {
   const zoom = calculateZoom();
 
   return (
-    <div className="w-full h-[600px] rounded-lg overflow-hidden border-2 border-primary/30">
+    <div className="w-full h-[600px] rounded-lg overflow-hidden border-2 border-primary/30 shadow-xl">
       <MapContainer
         center={[center.lat, center.lon]}
         zoom={zoom}
@@ -81,145 +106,100 @@ export default function MapView({ locations }: MapViewProps) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {locations.map((location, index) => (
-          <>
-            {/* Visual radius circle */}
-            <Circle
-              key={`circle-${index}`}
-              center={[location.lat, location.lon]}
-              radius={location.search_radius || 1000}
-              pathOptions={{ 
-                color: 'blue', 
-                fillColor: 'blue', 
-                fillOpacity: 0.1,
-                weight: 1,
-                dashArray: '5, 10'
-              }}
-            />
-            
-            <Marker key={`marker-${index}`} position={[location.lat, location.lon]}>
-              <Popup maxWidth={350}>
-                <div className="p-2">
-                  {/* Address */}
-                  <h3 className="font-bold text-lg mb-1">{location.address}</h3>
-                  <p className="text-xs text-gray-500 mb-2">
-                    📍 {location.lat.toFixed(5)}, {location.lon.toFixed(5)}
-                  </p>
-                  
-                  {/* Radius info */}
-                  <div className="text-xs text-blue-500 mb-3 border-b border-gray-300 pb-2">
-                    🔍 Dostupnost v okruhu: <span className="font-semibold">{location.search_radius || 1000} m</span>
-                  </div>
+        {locations.map((location, index) => {
+          const rating = ratings[index];
+          const isSelected = selectedIndex === index;
+          
+          return (
+            <div key={`location-${index}`}>
+              {/* Visual radius circle */}
+              <Circle
+                center={[location.lat, location.lon]}
+                radius={location.search_radius || 1000}
+                pathOptions={{
+                  color: isSelected ? '#00d9ff' : '#3b82f6',
+                  fillColor: isSelected ? '#00d9ff' : '#3b82f6',
+                  fillOpacity: isSelected ? 0.15 : 0.08,
+                  weight: isSelected ? 2 : 1,
+                  dashArray: '5, 10',
+                }}
+              />
 
-                  {/* POI Information */}
-                  {location.poi_nearby && Object.keys(location.poi_nearby).length > 0 ? (
-                    <div className="space-y-3">
-                      {/* Transport */}
-                      {location.poi_nearby.transport && location.poi_nearby.transport.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-sm mb-1 flex items-center">
-                            🚇 Doprava
-                          </h4>
-                          <ul className="text-xs space-y-1">
-                            {location.poi_nearby.transport.slice(0, 3).map((item, i) => (
-                              <li key={i} className="flex justify-between pl-4">
-                                <span>• {item.name}</span>
-                                <span className="text-gray-500">({item.distance}m)</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* Schools */}
-                      {location.poi_nearby.schools && location.poi_nearby.schools.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-sm mb-1 flex items-center">
-                            🏫 Školy
-                          </h4>
-                          <ul className="text-xs space-y-1">
-                            {location.poi_nearby.schools.slice(0, 3).map((item, i) => (
-                              <li key={i} className="flex justify-between pl-4">
-                                <span>• {item.name}</span>
-                                <span className="text-gray-500">({item.distance}m)</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* Shops */}
-                      {location.poi_nearby.shops && location.poi_nearby.shops.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-sm mb-1 flex items-center">
-                            🛒 Obchody
-                          </h4>
-                          <ul className="text-xs space-y-1">
-                            {location.poi_nearby.shops.slice(0, 3).map((item, i) => (
-                              <li key={i} className="flex justify-between pl-4">
-                                <span>• {item.name}</span>
-                                <span className="text-gray-500">({item.distance}m)</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* Hospitals */}
-                      {location.poi_nearby.hospitals && location.poi_nearby.hospitals.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-sm mb-1 flex items-center">
-                            🏥 Nemocnice
-                          </h4>
-                          <ul className="text-xs space-y-1">
-                            {location.poi_nearby.hospitals.slice(0, 3).map((item, i) => (
-                              <li key={i} className="flex justify-between pl-4">
-                                <span>• {item.name}</span>
-                                <span className="text-gray-500">({item.distance}m)</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* Services */}
-                      {location.poi_nearby.services && location.poi_nearby.services.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-sm mb-1 flex items-center">
-                            🏦 Služby
-                          </h4>
-                          <ul className="text-xs space-y-1">
-                            {location.poi_nearby.services.slice(0, 3).map((item, i) => (
-                              <li key={i} className="flex justify-between pl-4">
-                                <span>• {item.name}</span>
-                                <span className="text-gray-500">({item.distance}m)</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* Button for full POI details */}
-                      <div className="mt-4 pt-3 border-t border-gray-300">
-                        <button 
-                          className="w-full text-xs text-blue-600 hover:text-blue-800 font-semibold"
-                          onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lon}`, '_blank')}
-                        >
-                          📍 Zobrazit více POI →
-                        </button>
-                      </div>
+              <Marker
+                position={[location.lat, location.lon]}
+                icon={createCustomIcon(rating, isSelected)}
+                eventHandlers={{
+                  click: () => onMarkerClick(index),
+                }}
+              >
+                <Popup maxWidth={350} className="custom-popup">
+                  <div className="p-3">
+                    {/* Address */}
+                    <h3 className="font-bold text-lg mb-1">{location.address}</h3>
+                    
+                    {/* Rating Badge */}
+                    <div className="inline-flex items-center gap-2 mb-2 bg-gray-100 px-3 py-1 rounded-lg">
+                      <span className="text-2xl font-black" style={{ 
+                        color: rating >= 8 ? '#10b981' : rating >= 6 ? '#f59e0b' : '#ef4444' 
+                      }}>
+                        {rating.toFixed(1)}
+                      </span>
+                      <span className="text-xs text-gray-500">/ 10</span>
                     </div>
-                  ) : (
-                    <p className="text-xs text-yellow-600 italic">
-                      ⚠️ POI данные недоступны для этого адреса
-                    </p>
-                  )}
-                </div>
-              </Popup>
-            </Marker>
-          </>
-        ))}
+
+                    {/* Quick POI Summary */}
+                    <div className="grid grid-cols-5 gap-2 mt-3 mb-3">
+                      {[
+                        { emoji: '🚇', count: location.poi_nearby?.transport?.length || 0 },
+                        { emoji: '🏫', count: location.poi_nearby?.schools?.length || 0 },
+                        { emoji: '🛒', count: location.poi_nearby?.shops?.length || 0 },
+                        { emoji: '🏥', count: location.poi_nearby?.hospitals?.length || 0 },
+                        { emoji: '🏦', count: location.poi_nearby?.services?.length || 0 },
+                      ].map((item, i) => (
+                        <div
+                          key={i}
+                          className="flex flex-col items-center bg-gray-50 rounded p-2"
+                        >
+                          <span className="text-lg">{item.emoji}</span>
+                          <span className="text-xs font-bold">{item.count}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={() => onMarkerClick(index)}
+                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                    >
+                      Zobrazit detail →
+                    </button>
+                  </div>
+                </Popup>
+              </Marker>
+            </div>
+          );
+        })}
       </MapContainer>
+
+      {/* Custom CSS for popup */}
+      <style>{`
+        .custom-popup .leaflet-popup-content-wrapper {
+          background: white;
+          border-radius: 12px;
+          padding: 0;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .custom-popup .leaflet-popup-content {
+          margin: 0;
+          width: auto !important;
+        }
+        .custom-popup .leaflet-popup-tip {
+          background: white;
+        }
+        .custom-marker {
+          background: transparent;
+          border: none;
+        }
+      `}</style>
     </div>
   );
 }
