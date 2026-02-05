@@ -44,11 +44,18 @@ export default function MapaNemovitosti() {
         url: 'https://mapprompt-backend.netlify.app/api/geocode'
       });
 
+      // Создаём контроллер для timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 секунд timeout
+
       const response = await fetch('https://mapprompt-backend.netlify.app/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addresses: addressList, radius: radius }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       console.log('[MapaNemovitosti] Response received:', {
         status: response.status,
