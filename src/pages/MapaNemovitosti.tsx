@@ -1,12 +1,21 @@
 import { motion } from 'framer-motion';
-import { Map, Upload, Sparkles, AlertCircle, SlidersHorizontal, Filter, ArrowUpDown } from 'lucide-react';
-import { useState } from 'react';
+import { Map, Upload, Sparkles, AlertCircle, SlidersHorizontal, Filter, ArrowUpDown, Download, Copy, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MapView from '../components/MapView';
 import LocationCard from '../components/LocationCard';
 import LocationModal from '../components/LocationModal';
 import CompareModal from '../components/CompareModal';
 import { API_ENDPOINTS } from '../config';
+import {
+  calculateRating,
+  saveAddresses,
+  loadAddresses,
+  saveRadius,
+  loadRadius,
+  exportToCSV,
+  copyToClipboard,
+} from '../utils/helpers';
 
 interface Location {
   address: string;
@@ -35,31 +44,17 @@ export default function MapaNemovitosti() {
   const [showCompare, setShowCompare] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('rating');
   const [filterPOI, setFilterPOI] = useState<string[]>([]);
+  const [copied, setCopied] = useState(false);
+
+  // Load saved data on mount
+  useEffect(() => {
+    const savedAddresses = loadAddresses();
+    const savedRadius = loadRadius();
+    if (savedAddresses) setAddresses(savedAddresses);
+    setRadius(savedRadius);
+  }, []);
 
   // Calculate rating for a location (0-10 scale)
-  const calculateRating = (location: Location): number => {
-    const weights = {
-      transport: 2.5,
-      schools: 2.0,
-      shops: 2.0,
-      hospitals: 1.5,
-      services: 2.0,
-    };
-
-    let totalScore = 0;
-    let totalWeight = 0;
-
-    Object.entries(weights).forEach(([key, weight]) => {
-      const count = location.poi_nearby?.[key as keyof typeof location.poi_nearby]?.length || 0;
-      // Normalize: assume 10+ POIs = perfect score for that category
-      const normalizedScore = Math.min(count / 10, 1) * 10;
-      totalScore += normalizedScore * weight;
-      totalWeight += weight;
-    });
-
-    return totalWeight > 0 ? totalScore / totalWeight : 0;
-  };
-
   const ratings = locations.map(calculateRating);
 
   // Get location with rating
@@ -111,6 +106,10 @@ export default function MapaNemovitosti() {
         setIsGenerating(false);
         return;
       }
+
+      // Save to localStorage
+      saveAddresses(addresses);
+      saveRadius(radius);
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -266,7 +265,7 @@ export default function MapaNemovitosti() {
           >
             {/* Controls */}
             <div className="glass rounded-xl p-6">
-              <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+              <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-4">
                 {/* Sort */}
                 <div className="flex items-center gap-3">
                   <ArrowUpDown size={20} className="text-primary" />
@@ -315,6 +314,30 @@ export default function MapaNemovitosti() {
                 >
                   <SlidersHorizontal size={16} className="inline mr-2" />
                   Porovnat vše
+                </button>
+              </div>
+
+              {/* Export Actions */}
+              <div className="flex flex-wrap gap-3 pt-4 border-t border-dark-border">
+                <button
+                  onClick={() => exportToCSV(locationsWithRatings)}
+                  className="btn-secondary text-xs py-2 px-4 flex items-center gap-2"
+                >
+                  <Download size={14} />
+                  Stáhnout CSV
+                </button>
+                <button
+                  onClick={async () => {
+                    const success = await copyToClipboard(locationsWithRatings);
+                    if (success) {
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }
+                  }}
+                  className="btn-secondary text-xs py-2 px-4 flex items-center gap-2"
+                >
+                  {copied ? <Check size={14} className="text-accent-green" /> : <Copy size={14} />}
+                  {copied ? 'Zkopírováno!' : 'Kopírovat souhrn'}
                 </button>
               </div>
             </div>

@@ -99,7 +99,7 @@ export default function LocationModal({ location, rating, onClose, onCompare }: 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
         onClick={onClose}
       >
         <motion.div
@@ -107,16 +107,16 @@ export default function LocationModal({ location, rating, onClose, onCompare }: 
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 20 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-dark-card border border-dark-border rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+          className="bg-dark-card border border-dark-border rounded-xl sm:rounded-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl"
         >
           {/* Header */}
-          <div className="sticky top-0 bg-dark-card border-b border-dark-border p-6 flex items-start justify-between z-10">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <MapPin className="text-primary" size={24} />
-                <h2 className="text-2xl font-black">{location.address}</h2>
+          <div className="sticky top-0 bg-dark-card border-b border-dark-border p-4 sm:p-6 flex items-start justify-between z-10">
+            <div className="flex-1 min-w-0 pr-2">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                <MapPin className="text-primary flex-shrink-0" size={20} />
+                <h2 className="text-lg sm:text-2xl font-black truncate">{location.address}</h2>
               </div>
-              <p className="text-sm text-text-secondary">{location.display_name}</p>
+              <p className="text-xs sm:text-sm text-text-secondary line-clamp-1">{location.display_name}</p>
             </div>
             <button
               onClick={onClose}
@@ -126,7 +126,7 @@ export default function LocationModal({ location, rating, onClose, onCompare }: 
             </button>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             {/* Rating Section */}
             <div className="glass rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
@@ -265,18 +265,18 @@ export default function LocationModal({ location, rating, onClose, onCompare }: 
             )}
 
             {/* Actions */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={onCompare}
-                className="btn-primary flex-1 py-3"
+                className="btn-primary flex-1 py-3 text-sm sm:text-base"
               >
                 Porovnat s ostatními
               </button>
               <button
                 onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lon}`, '_blank')}
-                className="btn-secondary py-3 px-6"
+                className="btn-secondary py-3 px-4 sm:px-6 text-sm sm:text-base whitespace-nowrap"
               >
-                Otevřít v Google Maps
+                Google Maps
               </button>
             </div>
           </div>
